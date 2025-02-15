@@ -1,5 +1,7 @@
+// Objeto con las banderas y su url
+import banderas from "../banderas.js";
+
 // SELECTORES
-const cardsCategoria = document.querySelector("#cardsCategorias");
 
 const filtrarCategorias =
     "https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood";
@@ -12,10 +14,10 @@ const detallesReceta =
 app();
 
 function app() {
-    document.addEventListener("DOMContentLoaded", consultasInicio);
+    document.addEventListener("DOMContentLoaded", consultaInicio);
 }
 
-function consultasInicio() {
+function consultaInicio() {
     const apiPaises = "https://www.themealdb.com/api/json/v1/1/list.php?a=list";
     const apiCategorias =
         "https://www.themealdb.com/api/json/v1/1/categories.php";
@@ -24,25 +26,69 @@ function consultasInicio() {
     fetch(apiPaises)
         .then((respuesta) => respuesta.json())
         .then((datos) => {
-            // console.log(datos.meals);
+            const cardsPaises = document.querySelector("#cardsPaises");
+
+            datos.meals.forEach((pais) => {
+                const { strArea } = pais;
+
+                const divCardPais = document.createElement("div");
+                divCardPais.classList.add("card-pais");
+
+                // Crear el contenedor de la imagen
+                const divImagen = document.createElement("div");
+                divImagen.classList.add("card-imagen");
+
+                const imgPais = document.createElement("img");
+                imgPais.src = banderas[strArea];
+
+                // Crear el contenedor del contenido
+                const divContenido = document.createElement("div");
+                divContenido.classList.add("card-contenido");
+
+                const nombrePais = document.createElement("p");
+                nombrePais.textContent = strArea;
+
+                // Estructura correcta
+                divImagen.appendChild(imgPais);
+                divContenido.appendChild(nombrePais);
+                divCardPais.appendChild(divImagen);
+                divCardPais.appendChild(divContenido);
+                cardsPaises.appendChild(divCardPais);
+            });
         });
 
     // Consultar categorias
     fetch(apiCategorias)
         .then((respuesta) => respuesta.json())
         .then((datos) => {
+            const cardsCategorias = document.querySelector("#cardsCategorias");
+
             datos.categories.forEach((categoria) => {
-                // Destructuring
                 const { strCategory, strCategoryThumb } = categoria;
 
-                console.log(strCategory);
-                console.log(strCategoryThumb);
+                const divCardCategoria = document.createElement("div");
+                divCardCategoria.classList.add("card-categoria");
 
-                // Scripting
-                // const divCard = document.createElement("div");
-                // divCard.textContent = datos.categories[0].strCategory;
+                // Crear el contenedor de la imagen
+                const divImagen = document.createElement("div");
+                divImagen.classList.add("card-imagen");
 
-                // cardsCategoria.appendChild(divCard);
+                const imgCategoria = document.createElement("img");
+                imgCategoria.src = strCategoryThumb;
+
+                // Crear el contenedor del contenido
+                const divContenido = document.createElement("div");
+                divContenido.classList.add("card-contenido");
+
+                const nombreCategoria = document.createElement("p");
+                nombreCategoria.textContent = strCategory;
+
+                // Estructura correcta
+                divImagen.appendChild(imgCategoria);
+                divContenido.appendChild(nombreCategoria);
+                divCardCategoria.appendChild(divImagen);
+                divCardCategoria.appendChild(divContenido);
+                cardsCategorias.appendChild(divCardCategoria);
             });
         });
 }
