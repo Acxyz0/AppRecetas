@@ -5,8 +5,6 @@ import banderas from "../banderas.js";
 
 const filtrarCategorias =
     "https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood";
-const filtrarPaises =
-    "https://www.themealdb.com/api/json/v1/1/filter.php?a=Canadian";
 
 const detallesReceta =
     "https://www.themealdb.com/api/json/v1/1/lookup.php?i=52772";
@@ -33,7 +31,9 @@ function consultaInicio() {
 
                 const divCardPais = document.createElement("div");
                 divCardPais.classList.add("card-pais");
-
+                divCardPais.onclick = () => {
+                    filtrarPais(strArea);
+                };
                 // Crear el contenedor de la imagen
                 const divImagen = document.createElement("div");
                 divImagen.classList.add("card-imagen");
@@ -90,5 +90,14 @@ function consultaInicio() {
                 divCardCategoria.appendChild(divContenido);
                 cardsCategorias.appendChild(divCardCategoria);
             });
+        });
+}
+
+function filtrarPais(pais) {
+    const filtrarPaises = `https://www.themealdb.com/api/json/v1/1/filter.php?a=${pais}`;
+    fetch(filtrarPaises)
+        .then((respuesta) => respuesta.json())
+        .then((datos) => {
+            console.log(datos);
         });
 }
