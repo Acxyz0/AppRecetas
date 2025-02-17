@@ -2,26 +2,20 @@
 import banderas from "../banderas.js";
 
 // SELECTORES
-
-const filtrarCategorias =
-    "https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood";
-
 const detallesReceta =
     "https://www.themealdb.com/api/json/v1/1/lookup.php?i=52772";
 
 app();
-
 function app() {
     document.addEventListener("DOMContentLoaded", consultaInicio);
 }
 
 function consultaInicio() {
-    const apiPaises = "https://www.themealdb.com/api/json/v1/1/list.php?a=list";
-    const apiCategorias =
-        "https://www.themealdb.com/api/json/v1/1/categories.php";
+    const paises = "https://www.themealdb.com/api/json/v1/1/list.php?a=list";
+    const categorias = "https://www.themealdb.com/api/json/v1/1/categories.php";
 
     // Consultar paises
-    fetch(apiPaises)
+    fetch(paises)
         .then((respuesta) => respuesta.json())
         .then((datos) => {
             const cardsPaises = document.querySelector("#cardsPaises");
@@ -32,7 +26,7 @@ function consultaInicio() {
                 const divCardPais = document.createElement("div");
                 divCardPais.classList.add("card-pais");
                 divCardPais.onclick = () => {
-                    filtrarPais(strArea);
+                    aplicarFiltro(strArea, "pais");
                 };
                 // Crear el contenedor de la imagen
                 const divImagen = document.createElement("div");
@@ -58,7 +52,7 @@ function consultaInicio() {
         });
 
     // Consultar categorias
-    fetch(apiCategorias)
+    fetch(categorias)
         .then((respuesta) => respuesta.json())
         .then((datos) => {
             const cardsCategorias = document.querySelector("#cardsCategorias");
@@ -68,6 +62,9 @@ function consultaInicio() {
 
                 const divCardCategoria = document.createElement("div");
                 divCardCategoria.classList.add("card-categoria");
+                divCardCategoria.onclick = () => {
+                    aplicarFiltro(strCategory, "categoria");
+                };
 
                 // Crear el contenedor de la imagen
                 const divImagen = document.createElement("div");
@@ -93,11 +90,31 @@ function consultaInicio() {
         });
 }
 
-function filtrarPais(pais) {
-    const filtrarPaises = `https://www.themealdb.com/api/json/v1/1/filter.php?a=${pais}`;
-    fetch(filtrarPaises)
+function aplicarFiltro(nombre, tipo) {
+    if (tipo === "pais") {
+        const filtroPais = `https://www.themealdb.com/api/json/v1/1/filter.php?a=${nombre}`;
+        fetch(filtroPais)
+            .then((respuesta) => respuesta.json())
+            .then((datos) => {
+                console.log(datos);
+            });
+        return;
+    }
+
+    if (tipo === "categoria") {
+    }
+    const filtroCategoria = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${nombre}`;
+    fetch(filtroCategoria)
         .then((respuesta) => respuesta.json())
         .then((datos) => {
             console.log(datos);
         });
+    return;
+}
+
+// Cuando se manda a llamar, se recomienda tener en una variable el selector
+function limpiarHTML(selector) {
+    while (selector.firstChild) {
+        selector.removeChild(selector.firstChild);
+    }
 }
