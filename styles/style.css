@@ -87,7 +87,8 @@ img {
 }
 
 .card-categoria,
-.card-pais {
+.card-pais,
+.card-resultado {
     background: rgba(255, 255, 255, 0.15);
     border-radius: 15px;
     overflow: hidden;
@@ -97,7 +98,8 @@ img {
 }
 
 .card-categoria:hover,
-.card-pais:hover {
+.card-pais:hover,
+.card-resultado:hover {
     transform: translateY(-10px);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
     background: rgba(255, 255, 255, 0.2);
@@ -118,7 +120,8 @@ img {
 }
 
 .card-categoria:hover .card-imagen img,
-.card-pais:hover .card-imagen img {
+.card-pais:hover .card-imagen img,
+.card-resultado:hover .card-imagen img {
     transform: scale(1.1);
 }
 
@@ -127,7 +130,7 @@ img {
 }
 
 .card-contenido p {
-    font-weight: 500;
+    font-weight: 700;
     text-align: center;
     color: var(--light-color);
 }

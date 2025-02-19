@@ -1,10 +1,6 @@
 // Objeto con las banderas y su url
 import banderas from "../banderas.js";
 
-// SELECTORES
-const detallesReceta =
-    "https://www.themealdb.com/api/json/v1/1/lookup.php?i=52772";
-
 app();
 function app() {
     document.addEventListener("DOMContentLoaded", consultaInicio);
@@ -60,9 +56,9 @@ function consultaInicio() {
             datos.categories.forEach((categoria) => {
                 const { strCategory, strCategoryThumb } = categoria;
 
-                const divCardCategoria = document.createElement("div");
-                divCardCategoria.classList.add("card-categoria");
-                divCardCategoria.onclick = () => {
+                const divCardResultado = document.createElement("div");
+                divCardResultado.classList.add("card-categoria");
+                divCardResultado.onclick = () => {
                     aplicarFiltro(strCategory, "categoria");
                 };
 
@@ -70,8 +66,8 @@ function consultaInicio() {
                 const divImagen = document.createElement("div");
                 divImagen.classList.add("card-imagen");
 
-                const imgCategoria = document.createElement("img");
-                imgCategoria.src = strCategoryThumb;
+                const imgResultado = document.createElement("img");
+                imgResultado.src = strCategoryThumb;
 
                 // Crear el contenedor del contenido
                 const divContenido = document.createElement("div");
@@ -81,11 +77,11 @@ function consultaInicio() {
                 nombreCategoria.textContent = strCategory;
 
                 // Estructura correcta
-                divImagen.appendChild(imgCategoria);
+                divImagen.appendChild(imgResultado);
                 divContenido.appendChild(nombreCategoria);
-                divCardCategoria.appendChild(divImagen);
-                divCardCategoria.appendChild(divContenido);
-                cardsCategorias.appendChild(divCardCategoria);
+                divCardResultado.appendChild(divImagen);
+                divCardResultado.appendChild(divContenido);
+                cardsCategorias.appendChild(divCardResultado);
             });
         });
 }
@@ -96,20 +92,68 @@ function aplicarFiltro(nombre, tipo) {
         fetch(filtroPais)
             .then((respuesta) => respuesta.json())
             .then((datos) => {
-                console.log(datos);
+                generarCardsResultado(datos);
             });
         return;
     }
 
     if (tipo === "categoria") {
+        const filtroCategoria = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${nombre}`;
+        fetch(filtroCategoria)
+            .then((respuesta) => respuesta.json())
+            .then((datos) => {
+                generarCardsResultado(datos);
+            });
+        return;
     }
-    const filtroCategoria = `https://www.themealdb.com/api/json/v1/1/filter.php?c=${nombre}`;
-    fetch(filtroCategoria)
+}
+
+function generarCardsResultado(datos) {
+    const cardsResultado = document.querySelector("#cardsResultados");
+
+    limpiarHTML(cardsResultado);
+
+    datos.meals.forEach((resultado) => {
+        const { idMeal, strMeal, strMealThumb } = resultado;
+
+        const divCardResultado = document.createElement("div");
+        divCardResultado.classList.add("card-resultado");
+        divCardResultado.onclick = () => {
+            generarDetalles(idMeal);
+        };
+
+        // Crear el contenedor de la imagen
+        const divImagen = document.createElement("div");
+        divImagen.classList.add("card-imagen");
+
+        // Mostrar la imagen
+        const imgResultado = document.createElement("img");
+        imgResultado.src = strMealThumb;
+
+        // Crear el contenedor del contenido
+        const divContenido = document.createElement("div");
+        divContenido.classList.add("card-contenido");
+
+        // Mostrar el nombre de la receta
+        const nombreCategoria = document.createElement("p");
+        nombreCategoria.textContent = strMeal;
+
+        divImagen.appendChild(imgResultado);
+        divContenido.appendChild(nombreCategoria);
+        divCardResultado.appendChild(divImagen);
+        divCardResultado.appendChild(divContenido);
+        cardsResultado.appendChild(divCardResultado);
+    });
+}
+
+function generarDetalles(id) {
+    const detalles = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`;
+
+    fetch(detalles)
         .then((respuesta) => respuesta.json())
         .then((datos) => {
-            console.log(datos);
+            console.log(datos.meals[0].idMeal);
         });
-    return;
 }
 
 // Cuando se manda a llamar, se recomienda tener en una variable el selector
