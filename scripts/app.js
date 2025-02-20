@@ -89,9 +89,7 @@ function inicio() {
             });
         });
 
-    seccionInicio.style.display = "block";
-    seccionResultado.style.display = "none";
-    seccionDetalle.style.display = "none";
+    ocultarSecciones("inicio");
 }
 
 function aplicarFiltro(nombre, tipo) {
@@ -100,7 +98,7 @@ function aplicarFiltro(nombre, tipo) {
         fetch(filtroPais)
             .then((respuesta) => respuesta.json())
             .then((datos) => {
-                generarCardsResultado(datos);
+                generarResultados(datos);
             });
         return;
     }
@@ -110,15 +108,14 @@ function aplicarFiltro(nombre, tipo) {
         fetch(filtroCategoria)
             .then((respuesta) => respuesta.json())
             .then((datos) => {
-                generarCardsResultado(datos);
+                generarResultados(datos);
             });
         return;
     }
 }
 
-function generarCardsResultado(datos) {
+function generarResultados(datos) {
     const cardsResultados = document.querySelector("#cardsResultados");
-
     limpiarHTML(cardsResultados);
 
     datos.meals.forEach((resultado) => {
@@ -130,19 +127,16 @@ function generarCardsResultado(datos) {
             generarDetalles(idMeal);
         };
 
-        // Crear el contenedor de la imagen
+        // Contenido de la tarjeta
         const divImagen = document.createElement("div");
         divImagen.classList.add("card-imagen");
 
-        // Mostrar la imagen
         const imagen = document.createElement("img");
         imagen.src = strMealThumb;
 
-        // Crear el contenedor del contenido
         const contenido = document.createElement("div");
         contenido.classList.add("card-contenido");
 
-        // Mostrar el nombre de la receta
         const nombre = document.createElement("p");
         nombre.textContent = strMeal;
 
@@ -153,9 +147,24 @@ function generarCardsResultado(datos) {
         cardsResultados.appendChild(card);
     });
 
-    seccionInicio.style.display = "none";
-    seccionResultado.style.display = "block";
-    seccionDetalle.style.display = "none";
+    let botonContainer = document.querySelector("#botonVolverContainer");
+    if (!botonContainer) {
+        botonContainer = document.createElement("div");
+        botonContainer.id = "botonVolverContainer";
+        botonContainer.classList.add("boton-container");
+
+        const botonVolver = document.createElement("button");
+        botonVolver.textContent = "Volver al inicio";
+        botonVolver.className = "boton-volver";
+        botonVolver.onclick = () => {
+            ocultarSecciones("inicio");
+        };
+
+        botonContainer.appendChild(botonVolver);
+        cardsResultados.parentNode.appendChild(botonContainer);
+    }
+
+    ocultarSecciones("resultado");
 }
 
 function generarDetalles(id) {

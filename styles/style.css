@@ -200,6 +200,12 @@ img {
     opacity: 0.9;
 }
 
+.boton-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
 .boton-volver {
     background-color: var(--secondary-color);
     color: var(--light-color);
