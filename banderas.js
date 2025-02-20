@@ -18,6 +18,7 @@ const banderas = {
     Malaysian: "./assets/Malasia.svg",
     Mexican: "./assets/Mexico.png",
     Moroccan: "./assets/Marruecos.png",
+    Norwegian: "./assets/Noruega.jpg",
     Polish: "./assets/Polonia.svg",
     Portuguese: "./assets/Portugal.png",
     Russian: "./assets/Rusia.svg",
@@ -28,6 +29,6 @@ const banderas = {
     Ukrainian: "./assets/Ucrania.png",
     Uruguayan: "./assets/Uruguay.jpg",
     Vietnamese: "./assets/Vietnam.png",
-}
+};
 
-export default banderas
+export default banderas;

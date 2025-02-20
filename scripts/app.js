@@ -1,12 +1,16 @@
 // Objeto con las banderas y su url
 import banderas from "../banderas.js";
 
+const seccionInicio = document.querySelector("#inicio");
+const seccionResultado = document.querySelector("#resultados");
+const seccionDetalle = document.querySelector("#detalles");
+
 app();
 function app() {
-    document.addEventListener("DOMContentLoaded", consultaInicio);
+    document.addEventListener("DOMContentLoaded", inicio);
 }
 
-function consultaInicio() {
+function inicio() {
     const paises = "https://www.themealdb.com/api/json/v1/1/list.php?a=list";
     const categorias = "https://www.themealdb.com/api/json/v1/1/categories.php";
 
@@ -19,31 +23,31 @@ function consultaInicio() {
             datos.meals.forEach((pais) => {
                 const { strArea } = pais;
 
-                const divCardPais = document.createElement("div");
-                divCardPais.classList.add("card-pais");
-                divCardPais.onclick = () => {
+                const card = document.createElement("div");
+                card.classList.add("card");
+                card.onclick = () => {
                     aplicarFiltro(strArea, "pais");
                 };
                 // Crear el contenedor de la imagen
                 const divImagen = document.createElement("div");
                 divImagen.classList.add("card-imagen");
 
-                const imgPais = document.createElement("img");
-                imgPais.src = banderas[strArea];
+                const imagen = document.createElement("img");
+                imagen.src = banderas[strArea];
 
                 // Crear el contenedor del contenido
-                const divContenido = document.createElement("div");
-                divContenido.classList.add("card-contenido");
+                const contenido = document.createElement("div");
+                contenido.classList.add("card-contenido");
 
-                const nombrePais = document.createElement("p");
-                nombrePais.textContent = strArea;
+                const nombre = document.createElement("p");
+                nombre.textContent = strArea;
 
                 // Estructura correcta
-                divImagen.appendChild(imgPais);
-                divContenido.appendChild(nombrePais);
-                divCardPais.appendChild(divImagen);
-                divCardPais.appendChild(divContenido);
-                cardsPaises.appendChild(divCardPais);
+                divImagen.appendChild(imagen);
+                contenido.appendChild(nombre);
+                card.appendChild(divImagen);
+                card.appendChild(contenido);
+                cardsPaises.appendChild(card);
             });
         });
 
@@ -56,9 +60,9 @@ function consultaInicio() {
             datos.categories.forEach((categoria) => {
                 const { strCategory, strCategoryThumb } = categoria;
 
-                const divCardResultado = document.createElement("div");
-                divCardResultado.classList.add("card-categoria");
-                divCardResultado.onclick = () => {
+                const card = document.createElement("div");
+                card.classList.add("card");
+                card.onclick = () => {
                     aplicarFiltro(strCategory, "categoria");
                 };
 
@@ -66,24 +70,28 @@ function consultaInicio() {
                 const divImagen = document.createElement("div");
                 divImagen.classList.add("card-imagen");
 
-                const imgResultado = document.createElement("img");
-                imgResultado.src = strCategoryThumb;
+                const imagen = document.createElement("img");
+                imagen.src = strCategoryThumb;
 
                 // Crear el contenedor del contenido
-                const divContenido = document.createElement("div");
-                divContenido.classList.add("card-contenido");
+                const contenido = document.createElement("div");
+                contenido.classList.add("card-contenido");
 
-                const nombreCategoria = document.createElement("p");
-                nombreCategoria.textContent = strCategory;
+                const nombre = document.createElement("p");
+                nombre.textContent = strCategory;
 
                 // Estructura correcta
-                divImagen.appendChild(imgResultado);
-                divContenido.appendChild(nombreCategoria);
-                divCardResultado.appendChild(divImagen);
-                divCardResultado.appendChild(divContenido);
-                cardsCategorias.appendChild(divCardResultado);
+                divImagen.appendChild(imagen);
+                contenido.appendChild(nombre);
+                card.appendChild(divImagen);
+                card.appendChild(contenido);
+                cardsCategorias.appendChild(card);
             });
         });
+
+    seccionInicio.style.display = "block";
+    seccionResultado.style.display = "none";
+    seccionDetalle.style.display = "none";
 }
 
 function aplicarFiltro(nombre, tipo) {
@@ -109,16 +117,16 @@ function aplicarFiltro(nombre, tipo) {
 }
 
 function generarCardsResultado(datos) {
-    const cardsResultado = document.querySelector("#cardsResultados");
+    const cardsResultados = document.querySelector("#cardsResultados");
 
-    limpiarHTML(cardsResultado);
+    limpiarHTML(cardsResultados);
 
     datos.meals.forEach((resultado) => {
         const { idMeal, strMeal, strMealThumb } = resultado;
 
-        const divCardResultado = document.createElement("div");
-        divCardResultado.classList.add("card-resultado");
-        divCardResultado.onclick = () => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        card.onclick = () => {
             generarDetalles(idMeal);
         };
 
@@ -127,23 +135,27 @@ function generarCardsResultado(datos) {
         divImagen.classList.add("card-imagen");
 
         // Mostrar la imagen
-        const imgResultado = document.createElement("img");
-        imgResultado.src = strMealThumb;
+        const imagen = document.createElement("img");
+        imagen.src = strMealThumb;
 
         // Crear el contenedor del contenido
-        const divContenido = document.createElement("div");
-        divContenido.classList.add("card-contenido");
+        const contenido = document.createElement("div");
+        contenido.classList.add("card-contenido");
 
         // Mostrar el nombre de la receta
-        const nombreCategoria = document.createElement("p");
-        nombreCategoria.textContent = strMeal;
+        const nombre = document.createElement("p");
+        nombre.textContent = strMeal;
 
-        divImagen.appendChild(imgResultado);
-        divContenido.appendChild(nombreCategoria);
-        divCardResultado.appendChild(divImagen);
-        divCardResultado.appendChild(divContenido);
-        cardsResultado.appendChild(divCardResultado);
+        divImagen.appendChild(imagen);
+        contenido.appendChild(nombre);
+        card.appendChild(divImagen);
+        card.appendChild(contenido);
+        cardsResultados.appendChild(card);
     });
+
+    seccionInicio.style.display = "none";
+    seccionResultado.style.display = "block";
+    seccionDetalle.style.display = "none";
 }
 
 function generarDetalles(id) {
@@ -152,8 +164,80 @@ function generarDetalles(id) {
     fetch(detalles)
         .then((respuesta) => respuesta.json())
         .then((datos) => {
-            console.log(datos.meals[0].idMeal);
+            mostarDetalle(datos.meals[0]);
         });
+}
+
+function mostarDetalle(receta) {
+    const cardDetalles = document.querySelector("#cardDetalles");
+    limpiarHTML(cardDetalles);
+    const { idMeal, strInstructions, strMeal, strMealThumb } = receta;
+
+    // Crear contenedor principal con clases
+    const card = document.createElement("div");
+    card.className = "detalle-card";
+
+    // Crear y estilizar título
+    const titulo = document.createElement("h3");
+    titulo.textContent = strMeal;
+    titulo.className = "detalle-titulo";
+
+    // Crear contenedor para el contenido
+    const contenido = document.createElement("div");
+
+    // Crear estructura HTML con clases
+    contenido.innerHTML = `
+                <div class="detalle-imagen-container">
+                    <img class="detalle-imagen" src="${strMealThumb}" alt="receta ${strMeal}">
+                </div>
+                <h3 class="detalle-subtitulo">Instrucciones</h3>
+                <p class="detalle-instrucciones">${strInstructions}</p>
+                <h3 class="detalle-subtitulo">Ingredientes y Cantidades</h3>
+            `;
+
+    // Crear y estilizar lista de ingredientes
+    const listaIngredientes = document.createElement("ul");
+    listaIngredientes.className = "ingredientes-lista";
+
+    for (let i = 1; i <= 20; i++) {
+        if (receta[`strIngredient${i}`]) {
+            const ingrediente = receta[`strIngredient${i}`];
+            const cantidad = receta[`strMeasure${i}`];
+
+            const ingredienteLi = document.createElement("li");
+            ingredienteLi.className = "ingrediente-item";
+
+            ingredienteLi.innerHTML = `
+                        <span class="ingrediente-nombre">${ingrediente}</span> 
+                        <span class="ingrediente-cantidad">- ${cantidad}</span>
+                    `;
+
+            listaIngredientes.appendChild(ingredienteLi);
+        }
+    }
+
+    // Añadir botón de volver (opcional)
+    const botonVolver = document.createElement("button");
+    botonVolver.textContent = "Volver a recetas";
+    botonVolver.className = "boton-volver";
+    botonVolver.onclick = () => {
+        ocultarSecciones("resultado");
+    };
+
+    // Agregar elementos al DOM
+    card.appendChild(titulo);
+    card.appendChild(contenido);
+    card.appendChild(listaIngredientes);
+    card.appendChild(botonVolver);
+    cardDetalles.appendChild(card);
+
+    ocultarSecciones("detalle");
+}
+
+function ocultarSecciones(seccion) {
+    seccionInicio.style.display = seccion === "inicio" ? "block" : "none";
+    seccionResultado.style.display = seccion === "resultado" ? "block" : "none";
+    seccionDetalle.style.display = seccion === "detalle" ? "block" : "none";
 }
 
 // Cuando se manda a llamar, se recomienda tener en una variable el selector
