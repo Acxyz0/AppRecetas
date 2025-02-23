@@ -20,35 +20,41 @@ function inicio() {
         .then((datos) => {
             const cardsPaises = document.querySelector("#cardsPaises");
 
-            datos.meals.forEach((pais) => {
-                const { strArea } = pais;
+            spinner(cardsPaises);
 
-                const card = document.createElement("div");
-                card.classList.add("card");
-                card.onclick = () => {
-                    aplicarFiltro(strArea, "pais");
-                };
-                // Crear el contenedor de la imagen
-                const divImagen = document.createElement("div");
-                divImagen.classList.add("card-imagen");
+            setTimeout(() => {
+                limpiarHTML(cardsPaises);
 
-                const imagen = document.createElement("img");
-                imagen.src = banderas[strArea];
+                datos.meals.forEach((pais) => {
+                    const { strArea } = pais;
 
-                // Crear el contenedor del contenido
-                const contenido = document.createElement("div");
-                contenido.classList.add("card-contenido");
+                    const card = document.createElement("div");
+                    card.classList.add("card");
+                    card.onclick = () => {
+                        aplicarFiltro(strArea, "pais");
+                    };
+                    // Crear el contenedor de la imagen
+                    const divImagen = document.createElement("div");
+                    divImagen.classList.add("card-imagen");
 
-                const nombre = document.createElement("p");
-                nombre.textContent = strArea;
+                    const imagen = document.createElement("img");
+                    imagen.src = banderas[strArea];
 
-                // Estructura correcta
-                divImagen.appendChild(imagen);
-                contenido.appendChild(nombre);
-                card.appendChild(divImagen);
-                card.appendChild(contenido);
-                cardsPaises.appendChild(card);
-            });
+                    // Crear el contenedor del contenido
+                    const contenido = document.createElement("div");
+                    contenido.classList.add("card-contenido");
+
+                    const nombre = document.createElement("p");
+                    nombre.textContent = strArea;
+
+                    // Estructura correcta
+                    divImagen.appendChild(imagen);
+                    contenido.appendChild(nombre);
+                    card.appendChild(divImagen);
+                    card.appendChild(contenido);
+                    cardsPaises.appendChild(card);
+                });
+            }, 2000);
         });
 
     // Consultar categorias
@@ -57,36 +63,42 @@ function inicio() {
         .then((datos) => {
             const cardsCategorias = document.querySelector("#cardsCategorias");
 
-            datos.categories.forEach((categoria) => {
-                const { strCategory, strCategoryThumb } = categoria;
+            spinner(cardsCategorias);
 
-                const card = document.createElement("div");
-                card.classList.add("card");
-                card.onclick = () => {
-                    aplicarFiltro(strCategory, "categoria");
-                };
+            setTimeout(() => {
+                limpiarHTML(cardsCategorias);
 
-                // Crear el contenedor de la imagen
-                const divImagen = document.createElement("div");
-                divImagen.classList.add("card-imagen");
+                datos.categories.forEach((categoria) => {
+                    const { strCategory, strCategoryThumb } = categoria;
 
-                const imagen = document.createElement("img");
-                imagen.src = strCategoryThumb;
+                    const card = document.createElement("div");
+                    card.classList.add("card");
+                    card.onclick = () => {
+                        aplicarFiltro(strCategory, "categoria");
+                    };
 
-                // Crear el contenedor del contenido
-                const contenido = document.createElement("div");
-                contenido.classList.add("card-contenido");
+                    // Crear el contenedor de la imagen
+                    const divImagen = document.createElement("div");
+                    divImagen.classList.add("card-imagen");
 
-                const nombre = document.createElement("p");
-                nombre.textContent = strCategory;
+                    const imagen = document.createElement("img");
+                    imagen.src = strCategoryThumb;
 
-                // Estructura correcta
-                divImagen.appendChild(imagen);
-                contenido.appendChild(nombre);
-                card.appendChild(divImagen);
-                card.appendChild(contenido);
-                cardsCategorias.appendChild(card);
-            });
+                    // Crear el contenedor del contenido
+                    const contenido = document.createElement("div");
+                    contenido.classList.add("card-contenido");
+
+                    const nombre = document.createElement("p");
+                    nombre.textContent = strCategory;
+
+                    // Estructura correcta
+                    divImagen.appendChild(imagen);
+                    contenido.appendChild(nombre);
+                    card.appendChild(divImagen);
+                    card.appendChild(contenido);
+                    cardsCategorias.appendChild(card);
+                });
+            }, 2000);
         });
 
     ocultarSecciones("inicio");
@@ -116,55 +128,60 @@ function aplicarFiltro(nombre, tipo) {
 
 function generarResultados(datos) {
     const cardsResultados = document.querySelector("#cardsResultados");
-    limpiarHTML(cardsResultados);
-
-    datos.meals.forEach((resultado) => {
-        const { idMeal, strMeal, strMealThumb } = resultado;
-
-        const card = document.createElement("div");
-        card.classList.add("card");
-        card.onclick = () => {
-            generarDetalles(idMeal);
-        };
-
-        // Contenido de la tarjeta
-        const divImagen = document.createElement("div");
-        divImagen.classList.add("card-imagen");
-
-        const imagen = document.createElement("img");
-        imagen.src = strMealThumb;
-
-        const contenido = document.createElement("div");
-        contenido.classList.add("card-contenido");
-
-        const nombre = document.createElement("p");
-        nombre.textContent = strMeal;
-
-        divImagen.appendChild(imagen);
-        contenido.appendChild(nombre);
-        card.appendChild(divImagen);
-        card.appendChild(contenido);
-        cardsResultados.appendChild(card);
-    });
-
-    let botonContainer = document.querySelector("#botonVolverContainer");
-    if (!botonContainer) {
-        botonContainer = document.createElement("div");
-        botonContainer.id = "botonVolverContainer";
-        botonContainer.classList.add("boton-container");
-
-        const botonVolver = document.createElement("button");
-        botonVolver.textContent = "Volver al inicio";
-        botonVolver.className = "boton-volver";
-        botonVolver.onclick = () => {
-            ocultarSecciones("inicio");
-        };
-
-        botonContainer.appendChild(botonVolver);
-        cardsResultados.parentNode.appendChild(botonContainer);
-    }
 
     ocultarSecciones("resultado");
+
+    spinner(cardsResultados);
+
+    setTimeout(() => {
+        limpiarHTML(cardsResultados);
+
+        datos.meals.forEach((resultado) => {
+            const { idMeal, strMeal, strMealThumb } = resultado;
+
+            const card = document.createElement("div");
+            card.classList.add("card");
+            card.onclick = () => {
+                generarDetalles(idMeal);
+            };
+
+            // Contenido de la tarjeta
+            const divImagen = document.createElement("div");
+            divImagen.classList.add("card-imagen");
+
+            const imagen = document.createElement("img");
+            imagen.src = strMealThumb;
+
+            const contenido = document.createElement("div");
+            contenido.classList.add("card-contenido");
+
+            const nombre = document.createElement("p");
+            nombre.textContent = strMeal;
+
+            divImagen.appendChild(imagen);
+            contenido.appendChild(nombre);
+            card.appendChild(divImagen);
+            card.appendChild(contenido);
+            cardsResultados.appendChild(card);
+        });
+
+        let botonContainer = document.querySelector("#botonVolverContainer");
+        if (!botonContainer) {
+            botonContainer = document.createElement("div");
+            botonContainer.id = "botonVolverContainer";
+            botonContainer.classList.add("boton-container");
+
+            const botonVolver = document.createElement("button");
+            botonVolver.textContent = "Volver al inicio";
+            botonVolver.className = "boton-volver";
+            botonVolver.onclick = () => {
+                ocultarSecciones("inicio");
+            };
+
+            botonContainer.appendChild(botonVolver);
+            cardsResultados.parentNode.appendChild(botonContainer);
+        }
+    }, 2000);
 }
 
 function generarDetalles(id) {
@@ -179,23 +196,29 @@ function generarDetalles(id) {
 
 function mostarDetalle(receta) {
     const cardDetalles = document.querySelector("#cardDetalles");
-    limpiarHTML(cardDetalles);
     const { idMeal, strInstructions, strMeal, strMealThumb } = receta;
 
-    // Crear contenedor principal con clases
-    const card = document.createElement("div");
-    card.className = "detalle-card";
+    ocultarSecciones("detalle");
 
-    // Crear y estilizar título
-    const titulo = document.createElement("h3");
-    titulo.textContent = strMeal;
-    titulo.className = "detalle-titulo";
+    spinner(cardDetalles);
 
-    // Crear contenedor para el contenido
-    const contenido = document.createElement("div");
+    setTimeout(() => {
+        limpiarHTML(cardDetalles);
 
-    // Crear estructura HTML con clases
-    contenido.innerHTML = `
+        // Crear contenedor principal con clases
+        const card = document.createElement("div");
+        card.className = "detalle-card";
+
+        // Crear y estilizar título
+        const titulo = document.createElement("h3");
+        titulo.textContent = strMeal;
+        titulo.className = "detalle-titulo";
+
+        // Crear contenedor para el contenido
+        const contenido = document.createElement("div");
+
+        // Crear estructura HTML con clases
+        contenido.innerHTML = `
                 <div class="detalle-imagen-container">
                     <img class="detalle-imagen" src="${strMealThumb}" alt="receta ${strMeal}">
                 </div>
@@ -204,49 +227,61 @@ function mostarDetalle(receta) {
                 <h3 class="detalle-subtitulo">Ingredientes y Cantidades</h3>
             `;
 
-    // Crear y estilizar lista de ingredientes
-    const listaIngredientes = document.createElement("ul");
-    listaIngredientes.className = "ingredientes-lista";
+        // Crear y estilizar lista de ingredientes
+        const listaIngredientes = document.createElement("ul");
+        listaIngredientes.className = "ingredientes-lista";
 
-    for (let i = 1; i <= 20; i++) {
-        if (receta[`strIngredient${i}`]) {
-            const ingrediente = receta[`strIngredient${i}`];
-            const cantidad = receta[`strMeasure${i}`];
+        for (let i = 1; i <= 20; i++) {
+            if (receta[`strIngredient${i}`]) {
+                const ingrediente = receta[`strIngredient${i}`];
+                const cantidad = receta[`strMeasure${i}`];
 
-            const ingredienteLi = document.createElement("li");
-            ingredienteLi.className = "ingrediente-item";
+                const ingredienteLi = document.createElement("li");
+                ingredienteLi.className = "ingrediente-item";
 
-            ingredienteLi.innerHTML = `
+                ingredienteLi.innerHTML = `
                         <span class="ingrediente-nombre">${ingrediente}</span> 
                         <span class="ingrediente-cantidad">- ${cantidad}</span>
                     `;
 
-            listaIngredientes.appendChild(ingredienteLi);
+                listaIngredientes.appendChild(ingredienteLi);
+            }
         }
-    }
 
-    // Añadir botón de volver (opcional)
-    const botonVolver = document.createElement("button");
-    botonVolver.textContent = "Volver a recetas";
-    botonVolver.className = "boton-volver";
-    botonVolver.onclick = () => {
-        ocultarSecciones("resultado");
-    };
+        // Añadir botón de volver (opcional)
+        const botonVolver = document.createElement("button");
+        botonVolver.textContent = "Volver a recetas";
+        botonVolver.className = "boton-volver";
+        botonVolver.onclick = () => {
+            ocultarSecciones("resultado");
+        };
 
-    // Agregar elementos al DOM
-    card.appendChild(titulo);
-    card.appendChild(contenido);
-    card.appendChild(listaIngredientes);
-    card.appendChild(botonVolver);
-    cardDetalles.appendChild(card);
-
-    ocultarSecciones("detalle");
+        // Agregar elementos al DOM
+        card.appendChild(titulo);
+        card.appendChild(contenido);
+        card.appendChild(listaIngredientes);
+        card.appendChild(botonVolver);
+        cardDetalles.appendChild(card);
+    }, 2000);
 }
 
 function ocultarSecciones(seccion) {
     seccionInicio.style.display = seccion === "inicio" ? "block" : "none";
     seccionResultado.style.display = seccion === "resultado" ? "block" : "none";
     seccionDetalle.style.display = seccion === "detalle" ? "block" : "none";
+}
+
+function spinner(selector) {
+    limpiarHTML(selector);
+
+    const spinnerContainer = document.createElement("div");
+    spinnerContainer.classList.add("spinner-container");
+
+    const spinner = document.createElement("div");
+    spinner.classList.add("spinner");
+
+    spinnerContainer.appendChild(spinner);
+    selector.appendChild(spinnerContainer);
 }
 
 // Cuando se manda a llamar, se recomienda tener en una variable el selector
