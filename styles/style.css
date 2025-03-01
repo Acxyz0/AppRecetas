@@ -276,15 +276,14 @@ img {
     }
 }
 
-/* Aseguramos que los contenedores de cards tengan altura mínima */
 .cards-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 2rem;
     padding: 1rem;
     text-align: center;
-    min-height: 200px; /* Altura mínima para el contenedor */
-    position: relative; /* Para el posicionamiento del spinner */
+    min-height: 200px;
+    position: relative;
 }
 
 /* SPINNER */
@@ -310,7 +309,6 @@ img {
     margin: 0;
 }
 
-/* Para la sección de resultados */
 #resultados {
     min-height: 60vh;
     position: relative;
